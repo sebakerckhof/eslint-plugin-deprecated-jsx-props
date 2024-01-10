@@ -1,0 +1,45 @@
+{
+  "name": "eslint-plugin-deprecated-jsx-props",
+  "version": "0.1.0",
+  "description": "Small eslint plugin to report usage of deprecated props",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "npm run clean && tsc --build",
+    "test:integration": "cd tests/integration && npm run test",
+    "test": "npm run build && npm run test:integration",
+    "lint:integration": "npm run build && cd tests/integration && npm run lint"
+  },
+  "author": "seba kerckhof <sebastian.kerckhof@gmail.com>",
+  "license": "MIT",
+  "lint-staged": {
+    "src/**/*": "eslint --format node_modules/eslint-formatter-pretty --max-warnings=0"
+  },
+  "dependencies": {
+    "@typescript-eslint/utils": "^6.18.1",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.56.1",
+    "@types/estree": "1.0.5",
+    "@types/jest": "^29.5.11",
+    "@types/lodash": "^4.14.112",
+    "@types/node": "^13.13.0",
+    "@types/react": "^16.9.34",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "eslint": "^8.56.0",
+    "eslint-formatter-pretty": "^6.0.1",
+    "eslint-plugin-jest": "^27.6.1",
+    "eslint-plugin-react": "^7.33.2",
+    "jest": "^29.7.0",
+    "lint-staged": "^10.1.6",
+    "react": "^18.2.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^29.1.1"
+  },
+  "peerDependencies": {
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.56.0"
+  }
+}

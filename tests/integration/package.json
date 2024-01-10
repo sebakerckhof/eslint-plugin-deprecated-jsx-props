@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "eslint-plugin-deprecated-jsx-props-tester",
+  "scripts": {
+    "lint": "eslint --config ./.eslintrc.js --ext .tsx ./external-definition.tsx",
+    "test": "jest --config ../../jest.config.js"
+  },
+  "devDependencies": {
+    "eslint-plugin-deprecated-jsx-props": "file:../..",
+    "dummy-package": "file:../dummy-package"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "module": "ES2022",
+    "target": "es2022",
+    "lib": ["ES2022"],
+    "moduleResolution": "bundler",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "incremental": true,
+    "strict": true,
+    "baseUrl": "./",
+  },
+  "include": [
+    "./"
+  ]
+}
