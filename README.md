@@ -59,6 +59,11 @@ module.exports = {
 ```
 Note that this is simply the most minimal config for the plugin to work, you would normally already have other settings and rules in place for your project, but this is the bare minimum.
 
+By default the rule will also check the type of spread arguments. However, we can't statically determine the actual properties in the spread object. Therefore the spread arguments may trigger too much warnings. You can disable spread argument checks alltogether using the following config:
+```js
+ 'deprecated-props/deprecated-props': ['warn', { checkSpreadArguments: false }],
+```
+
 ## Testing
 To run the integration tests simply run
 ```bash

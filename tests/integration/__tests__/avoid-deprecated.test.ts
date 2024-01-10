@@ -9,16 +9,12 @@ const engineConfig: ESLint.Options = {
 
 const cli = new ESLint(engineConfig);
 
-const stringPatternArgument = /Prop '\w+' is deprecated\. .*?$/;
-const stringPatternSpreadArgument = /Spread object '\w+' may contain deprecated prop '\w+'/;
-
 describe('avoidDeprecated', () => {
   describe('when the component type is in the same file', () => {
     let res: ESLint.LintResult[];
   
     beforeEach(async () => {
       const file = path.resolve(__dirname, '../local-type.tsx');
-      debugger;
       res = await cli.lintFiles([file]);
     });
 
@@ -27,16 +23,6 @@ describe('avoidDeprecated', () => {
 
       expect(warningCount).toEqual(2);
       expect(errorCount).toEqual(0);
-    });
-
-    it('matches the message pattern', () => {
-      const { messages } = res[0]!;
-
-      const text1 = messages[0].message;
-      expect(text1).toMatch(stringPatternArgument);
-
-      const text2 = messages[1].message;
-      expect(text2).toMatch(stringPatternArgument);
     });
 
     it('generates exactly the right warnings', () => {
@@ -77,16 +63,6 @@ describe('avoidDeprecated', () => {
       expect(errorCount).toEqual(0);
     });
 
-    it('matches the message pattern', () => {
-      const { messages } = res[0]!;
-
-      const text1 = messages[0].message;
-      expect(text1).toMatch(stringPatternArgument);
-
-      const text2 = messages[1].message;
-      expect(text2).toMatch(stringPatternArgument);
-    });
-
     it('generates exactly the right warnings', () => {
       const { messages } = res[0]!;
 
@@ -124,13 +100,6 @@ describe('avoidDeprecated', () => {
       expect(errorCount).toEqual(0);
     });
 
-    it('matches the message pattern', () => {
-      const { messages } = res[0]!;
-      const text = messages[0].message;
-
-      expect(text).toMatch(stringPatternArgument);
-    });
-
     it('generates exactly the right warning', () => {
       const { messages } = res[0]!;
       const text = messages[0].message;
@@ -161,13 +130,6 @@ describe('avoidDeprecated', () => {
 
       expect(warningCount).toEqual(2);
       expect(errorCount).toEqual(0);
-    });
-
-    it('matches the message pattern', () => {
-      const { messages } = res[0]!;
-      const text = messages[0].message;
-
-      expect(text).toMatch(stringPatternArgument);
     });
 
     it('generates exactly the right warning', () => {
@@ -202,13 +164,6 @@ describe('avoidDeprecated', () => {
       expect(errorCount).toEqual(0);
     });
 
-    it('matches the message pattern', () => {
-      const { messages } = res[0]!;
-
-      const text = messages[0].message;
-      expect(text).toMatch(stringPatternArgument);
-    });
-
     it('generates exactly the right warning', () => {
       const { messages } = res[0]!;
 
@@ -230,16 +185,6 @@ describe('avoidDeprecated', () => {
 
       expect(warningCount).toEqual(2);
       expect(errorCount).toEqual(0);
-    });
-
-    it('matches the message pattern', () => {
-      const { messages } = res[0]!;
-
-      const text1 = messages[0].message;
-      expect(text1).toMatch(stringPatternArgument);
-
-      const text2 = messages[1].message;
-      expect(text2).toMatch(stringPatternArgument);
     });
 
     it('generates exactly the right warnings', () => {
@@ -280,13 +225,6 @@ describe('avoidDeprecated', () => {
       expect(errorCount).toEqual(0);
     });
 
-    it('matches the message pattern', () => {
-      const { messages } = res[0]!;
-
-      const text = messages[0].message;
-      expect(text).toMatch(stringPatternArgument);
-    });
-
     it('generates exactly the right warning', () => {
       const { messages } = res[0]!;
 
@@ -310,19 +248,19 @@ describe('avoidDeprecated', () => {
       expect(errorCount).toEqual(0);
     });
 
-    it('matches the message pattern', () => {
-      const { messages } = res[0]!;
-
-      const text = messages[0].message;
-      expect(text).toMatch(stringPatternSpreadArgument);
-    });
-
-    it('generates exactly the right warning', () => {
+    it('generates exactly the right warning for optional props', () => {
       const { messages } = res[0]!;
 
       const text = messages[0].message;
       expect(text).toMatch(`Spread object 'props2' may contain deprecated prop 'someProp'. reason
 More elaborate description...`);
+    });
+
+    it('generates exactly the right warning for required props', () => {
+      const { messages } = res[0]!;
+
+      const text = messages[2].message;
+      expect(text).toMatch(`Spread object 'props2' contains deprecated prop 'someProp3'. reason3`);
     });
   });
 });

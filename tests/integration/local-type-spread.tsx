@@ -12,7 +12,7 @@ type TComponentProps = {
   someProp2?: string;
 
   /** @deprecated reason3 */
-  someProp3?: string;
+  someProp3: string;
 
   someProp4?: string;
 }
@@ -21,7 +21,7 @@ type TComponentProps = {
 // Local component definition and usage
 type ComponentProps = Pick<TComponentProps, 'someProp' | 'someProp2'> & {
   /** @deprecated reason3 */
-  someProp3?: string;
+  someProp3: string;
 
   /** @deprecated reason4 */
   someProp4?: boolean;
@@ -56,6 +56,7 @@ export const Test = () => {
   const props2: ComponentProps = {
     ...prop3,
     someOtherProp: 1,
+    someProp3: '',
   };
   props2.someProp4 = true;
 

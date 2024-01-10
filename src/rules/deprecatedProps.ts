@@ -1,5 +1,5 @@
 import { ParserServices, ESLintUtils, TSESLint, TSESTree } from '@typescript-eslint/utils';
-import ts from 'typescript';
+import ts, { isOptionalTypeNode } from 'typescript';
 
 // TYPE GUARDS
 const isJSXOpeningElement = (node: TSESTree.Node): node is TSESTree.JSXOpeningElement => node.type ===  'JSXOpeningElement';
@@ -60,14 +60,12 @@ const getPropsType = (node: TSESTree.JSXIdentifier, services: ParserServices, tc
 };
 
 // RULE DEFINITION
-type TOptions = [{ checkSpreadArguments?: boolean }];
-
 const createRule = ESLintUtils.RuleCreator(
   () => 'https://github.com/sebakerckhof/eslint-plugin-deprecated-jsx-props',
 );
 
 const defaultOptions = { checkSpreadArguments: true };
-const rule = createRule<TOptions, 'avoidDeprecated' | 'avoidDeprecatedSpread'>({
+const rule = createRule({
   name: 'deprecated-jsx-props',
   meta: {
     type: 'problem',
@@ -77,7 +75,8 @@ const rule = createRule<TOptions, 'avoidDeprecated' | 'avoidDeprecatedSpread'>({
     },
     messages: {
       avoidDeprecated: `Prop '{{ name }}' is deprecated. {{ reason }}`,
-      avoidDeprecatedSpread: `Spread object '{{ name }}' may contain deprecated prop '{{ propName }}'. {{ reason }}`,
+      avoidDeprecatedSpread: `Spread object '{{ name }}' contains deprecated prop '{{ propName }}'. {{ reason }}`,
+      avoidDeprecatedSpreadMaybe: `Spread object '{{ name }}' may contain deprecated prop '{{ propName }}'. {{ reason }}`,
     },
     schema: [
       {
@@ -150,13 +149,13 @@ const rule = createRule<TOptions, 'avoidDeprecated' | 'avoidDeprecatedSpread'>({
           if (!spreadSymbol || !isIdentifier(argument)) return;
           const spreadType = tc.getTypeOfSymbol(spreadSymbol);
           const properties = spreadType.getProperties();
-   
           properties.forEach((property) => {
             const deprecatedProperty = deprecatedProperties.find((p) => property.name === p.name);
+            const isOptional =  property.valueDeclaration ? isOptionalTypeNode(property.valueDeclaration) : true;
             if (deprecatedProperty) {
               context.report({
                 node: argument,
-                messageId: 'avoidDeprecatedSpread',
+                messageId: isOptional ? 'avoidDeprecatedSpreadMaybe' : 'avoidDeprecatedSpread',
                 data: {
                   name: argument.name,
                   propName: deprecatedProperty.name,
